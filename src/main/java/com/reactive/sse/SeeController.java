@@ -25,7 +25,8 @@ public class SeeController {
     public Flux<ServerSentEvent<String>> streamEvents(@RequestParam(required = false) Integer delay){
         return Flux.interval(Duration.ofSeconds(delay == null ? 1 : delay))
                 .map(sequence -> {
-                    update("SSE - " + LocalTime.now().toString());
+               //     update("SSE - " + LocalTime.now().toString());
+                    System.out.println("Send event: " + "SSE - " + LocalTime.now().toString());
                     return ServerSentEvent.<String>builder()
                             .id(String.valueOf(sequence))
                             .event("message")
