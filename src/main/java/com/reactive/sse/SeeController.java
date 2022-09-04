@@ -22,8 +22,8 @@ public class SeeController {
     protected int counter = 0;
 
     @GetMapping("/stream-sse")
-    public Flux<ServerSentEvent<String>> streamEvents(){
-        return Flux.interval(Duration.ofSeconds(1))
+    public Flux<ServerSentEvent<String>> streamEvents(@RequestParam(required = false) Integer delay){
+        return Flux.interval(Duration.ofSeconds(delay == null ? 1 : delay))
                 .map(sequence -> {
                     update("SSE - " + LocalTime.now().toString());
                     return ServerSentEvent.<String>builder()
@@ -50,8 +50,8 @@ public class SeeController {
     }
 
     @GetMapping(path = "/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> streamFlux() {
-        return Flux.interval(Duration.ofSeconds(1))
+    public Flux<String> streamFlux(@RequestParam(required = false) Integer delay) {
+        return Flux.interval(Duration.ofSeconds(delay == null ? 1 : delay))
                 .map(sequence -> "Flux - " + LocalTime.now().toString());
     }
 
